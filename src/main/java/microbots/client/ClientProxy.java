@@ -20,14 +20,14 @@ extends CommonProxy{
 
   @Override
   public void preInit() {
+    RenderingRegistry.registerEntityRenderingHandler(EntityRobit.class, (manager) -> {
+      return new RenderEntityRobit(manager, null, 0.0F);
+    });
     MinecraftForge.EVENT_BUS.register(ClientEventHandler.instance());
   }
 
   @Override
   public void init() {
-    RenderingRegistry.registerEntityRenderingHandler(EntityRobit.class, (manager) -> {
-      return new RenderEntityRobit(manager, null, 0.0F);
-    });
     ClientRegistry.bindTileEntitySpecialRenderer(TileEntityAssembler.class, new RenderTileAssembler());
   }
 }

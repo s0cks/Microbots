@@ -27,6 +27,7 @@ public final class ShaderHelper{
     } catch(Exception e){
       throw new RuntimeException(getLog(program), e);
     }
+
     return program;
   }
 

@@ -14,7 +14,7 @@ import org.lwjgl.opengl.GL20;
 
 public final class RenderEntityRobit
 extends RenderLivingBase<EntityRobit>{
-  private int accents = 0;
+  private int accents = -1;
 
   public RenderEntityRobit(RenderManager renderManagerIn, ModelBase modelBaseIn, float shadowSizeIn) {
     super(renderManagerIn, modelBaseIn, shadowSizeIn);
@@ -61,13 +61,12 @@ extends RenderLivingBase<EntityRobit>{
       }
     }
     GlStateManager.popMatrix();
-
     this.unbindAccents();
     GlStateManager.enableLighting();
     GlStateManager.popMatrix();
   }
 
-  private void bindAccents(int color){
+  private void bindAccents(int c){
     if(this.accents != -1){
       ARBShaderObjects.glUseProgramObjectARB(this.accents);
     } else{
@@ -77,11 +76,10 @@ extends RenderLivingBase<EntityRobit>{
       }
     }
 
-    float r = ((color >> 16 & 0xFF) / 255);
-    float g = ((color >> 8 & 0xFF) / 255);
-    float b = ((color & 0xFF) / 255);
-
-    GL20.glUniform3f(GL20.glGetUniformLocation(this.accents, "accent"), r, g, b);
+    float r = (c & 0xFF0000) >> 16;
+    float g = (c & 0xFF00) >> 8;
+    float b = (c & 0xFF);
+    GL20.glUniform3f(GL20.glGetUniformLocation(this.accents, "accent"), r / 255, g / 255, b / 255);
   }
 
   private void unbindAccents(){

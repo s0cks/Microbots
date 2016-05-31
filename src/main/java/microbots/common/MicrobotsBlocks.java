@@ -20,7 +20,7 @@ public final class MicrobotsBlocks {
 
   private static void register(Block b) {
     String unlocName = b.getUnlocalizedName();
-    ResourceLocation loc = new ResourceLocation("mmc", unlocName.substring(unlocName.lastIndexOf('.') + 1));
+    ResourceLocation loc = new ResourceLocation("microbots", unlocName.substring(unlocName.lastIndexOf('.') + 1));
     GameRegistry.register(b, loc);
     GameRegistry.register(new ItemBlock(b), loc);
   }

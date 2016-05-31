@@ -3,12 +3,14 @@ package microbots.common;
 import microbots.api.IRobitPart;
 import microbots.api.IRobitPartManager;
 import microbots.api.MicrobotsApi;
+import microbots.common.entity.EntityRobit;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
+import net.minecraftforge.fml.common.registry.EntityRegistry;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -48,12 +50,16 @@ implements IRobitPartManager{
   public void onInit(FMLInitializationEvent e) {
     MicrobotsTiles.init();
     MicrobotsBlocks.init();
+    MicrobotsItems.init();
+
+    EntityRegistry.registerModEntity(EntityRobit.class, "robit", 1, instance, 80, 3, true);
 
     proxy.init();
   }
 
   @Mod.EventHandler
   public void onPostInit(FMLPostInitializationEvent e) {
+
   }
 
   @Mod.EventHandler
