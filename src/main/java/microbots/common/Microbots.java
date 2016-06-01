@@ -43,15 +43,15 @@ implements IRobitPartManager{
       throw new RuntimeException(e1);
     }
 
+    MicrobotsTiles.init();
+    MicrobotsBlocks.init();
+    MicrobotsItems.init();
+
     proxy.preInit();
   }
 
   @Mod.EventHandler
   public void onInit(FMLInitializationEvent e) {
-    MicrobotsTiles.init();
-    MicrobotsBlocks.init();
-    MicrobotsItems.init();
-
     EntityRegistry.registerModEntity(EntityRobit.class, "robit", 1, instance, 80, 3, true);
 
     proxy.init();

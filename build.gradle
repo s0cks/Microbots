@@ -29,7 +29,7 @@ minecraft {
 }
 
 dependencies {
-
+    compile 'com.dorkbox:TweenEngine:7.11'
 }
 
 apply plugin: 'idea'
