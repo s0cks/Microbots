@@ -1,0 +1,3 @@
+[submodule "Shoes"]
+	path = Shoes
+	url = https://github.com/s0cks/Shoes
