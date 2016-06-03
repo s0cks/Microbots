@@ -2,13 +2,15 @@
 /*/
 
 # Except These
+!/.gitmodules
 !/.gitignore
 !/build.gradle
 !/gradle
 !/gradlew
 !/gradlew.bat
-!/libs
+!/libs/
 !/LICENSE.md
 !/README.md
-!/src
-!/Shoes
+!/src/
+!/Shoes/
+!/MicroScheme/

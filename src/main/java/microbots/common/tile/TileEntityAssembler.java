@@ -35,6 +35,8 @@ extends TileEntity{
     super.readFromNBT(compound);
     if(compound.hasKey("RobitModel")){
       this.model = ModularRobitModel.fromNBT(compound.getCompoundTag("RobitModel"));
+      System.out.println("Loaded Model Compound");
+      this.model.forEach((part) -> System.out.println(part.id()));
     }
     if(compound.hasKey("DivState")){
       this.state = State.valueOf(compound.getString("DivState").toUpperCase());

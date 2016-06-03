@@ -4,7 +4,6 @@ import microbots.api.IRobitPart;
 import microbots.api.MicrobotsApi;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.nbt.NBTTagString;
 import net.minecraftforge.common.util.Constants;
 
 import java.util.Iterator;
@@ -33,20 +32,22 @@ implements Iterable<IRobitPart>{
   public void readFromNBT(NBTTagCompound compound){
     if(compound.hasKey("RobitParts")){
       this.parts.clear();
-      NBTTagList parts = compound.getTagList("RobitParts", Constants.NBT.TAG_STRING);
+      NBTTagList parts = compound.getTagList("RobitParts", Constants.NBT.TAG_COMPOUND);
       for(int i = 0; i < parts.tagCount(); i++){
-        this.parts.add(MicrobotsApi.PART_MANAGER.getPart(parts.getStringTagAt(i)));
+        NBTTagCompound partCompound = parts.getCompoundTagAt(i);
+        System.out.println("Loading Part: " + partCompound.getString("ID"));
+        this.parts.add(MicrobotsApi.PART_MANAGER.getPart(partCompound.getString("ID")));
       }
     }
   }
 
   public void writeToNBT(NBTTagCompound compound){
-    if(this.parts.size() > 0){
-      NBTTagList parts = new NBTTagList();
-      for(IRobitPart part : this){
-        parts.appendTag(new NBTTagString(part.id()));
-      }
-      compound.setTag("RobitParts", parts);
+    NBTTagList parts = new NBTTagList();
+    for(IRobitPart part : this){
+      NBTTagCompound partCompound = new NBTTagCompound();
+      partCompound.setString("ID", part.id());
+      parts.appendTag(partCompound);
     }
+    compound.setTag("RobitParts", parts);
   }
 }
