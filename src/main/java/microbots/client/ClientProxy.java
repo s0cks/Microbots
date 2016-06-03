@@ -44,7 +44,7 @@ extends CommonProxy{
     for(int i = 0; i < DefaultRobitModels.ALL_NAMES.length; i++){
       this.registerRender(MicrobotsItems.itemRobit, i, "robit");
     }
-
+    this.registerRender(MicrobotsItems.itemPDA, 0, "pda");
     this.registerRender(MicrobotsBlocks.blockAssembler, "assembler");
   }
 
