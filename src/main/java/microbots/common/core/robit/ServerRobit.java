@@ -10,6 +10,7 @@ import microbots.api.IRobit;
 import microbots.common.Microbots;
 import microbots.common.core.Keyboard;
 import microbots.common.core.Terminal;
+import microbots.common.core.robit.rproc.move;
 import microbots.common.core.robit.rproc.set_color;
 import microbots.common.core.robit.tproc.cls;
 import microbots.common.core.robit.tproc.display;
@@ -37,12 +38,16 @@ implements IRobit {
     this.id = id;
     this.robit = robit;
 
+    // Terminal Procedures
     this.env.define(new SchemeSymbol("display"), new display(this.terminal));
     this.env.define(new SchemeSymbol("set-cursor-pos"), new set_cursor_pos(this.terminal));
     this.env.define(new SchemeSymbol("cls"), new cls(this.terminal));
     this.env.define(new SchemeSymbol("get-cursor-pos-y"), new get_cursor_pos_y(this.terminal));
     this.env.define(new SchemeSymbol("get-cursor-pos-x"), new get_cursor_pos_x(this.terminal));
+
+    // Robit Procedures
     this.env.define(new SchemeSymbol("set-color"), new set_color(this.robit));
+    this.env.define(new SchemeSymbol("move"), new move(this.robit));
   }
 
   @Override

@@ -1,7 +1,6 @@
 (begin
     ; Movement
     (define move-west (macro (value) (move "west" value)))
-    (define move-west (macro (value) (move "west" value)))
     (define move-east (macro (value) (move "east" value)))
     (define move-north (macro (value) (move "north" value)))
     (define move-south (macro (value) (move "south" value)))
@@ -19,8 +18,7 @@
     (define red 255)
     (define main-loop
         (lambda (args)
-            (set-cursor-pos 1 (get-cursor-pos-y))
-            (display ">> Set Colour To Red")
+            (move-west 100)
             (set-color red 0 0)
             (if (> red 0)
                 (set! red (- red 1))

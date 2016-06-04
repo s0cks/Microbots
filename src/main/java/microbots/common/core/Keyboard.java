@@ -43,11 +43,10 @@ public final class Keyboard{
 
   public char take(){
     if(this.available == 0) return ((char) -1);
-    int next = this.write - this.available;
-    if(next < 0) next += this.capacity;
-    char c = this.buffer[next];
+    int next = this.write;
+    this.write--;
     this.available--;
-    return c;
+    return this.buffer[next];
   }
 
   @Override

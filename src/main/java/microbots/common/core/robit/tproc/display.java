@@ -20,6 +20,7 @@ extends SchemeProcedure{
     SchemeString value = ((SchemeString) SchemeUtils.car(schemeObject));
     if(value.value.equals("\n")){
       terminal.setCursorPos(1, terminal.getCursorY() + 1);
+      System.out.println("newline");
     } else{
       terminal.write(value.value);
       terminal.setCursorPos(terminal.getCursorX() + value.value.length(), terminal.getCursorY());

@@ -9,6 +9,7 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.ResourceLocation;
+import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 import shoes.client.ShoesTessellator;
 import shoes.common.Shoes;
@@ -43,7 +44,13 @@ extends GuiScreen{
   @Override
   protected void keyTyped(char typedChar, int keyCode)
   throws IOException {
-    MicrobotsNetwork.INSTANCE.sendToServer(new PacketKeydown(this.robit.getServerRobit().id(), keyCode, typedChar));
+    switch(keyCode){
+      case Keyboard.KEY_ESCAPE: super.keyTyped(typedChar, keyCode); break;
+      case Keyboard.KEY_SPACE: break;
+      default:{
+        MicrobotsNetwork.INSTANCE.sendToServer(new PacketKeydown(this.robit.getServerRobit().id(), keyCode, typedChar));
+      }
+    }
   }
 
   @Override
@@ -64,8 +71,8 @@ extends GuiScreen{
 
     FontHelper.drawString(
       this.robit.getClientRobit().getKeyboard(),
-      (this.guiLeft + 23) * scaleFactor + (free.getWidth(this.robit.getClientRobit().line(this.robit.getClientRobit().getCursorY()).trim())),
-      ((this.guiTop + 18) * scaleFactor) + (this.robit.getClientRobit().getCursorY() + (free.getHeight() / 1.75F)),
+      (this.guiLeft + 23 + this.robit.getClientRobit().getCursorX()) * scaleFactor,
+      ((this.guiTop + 18) * scaleFactor + (this.robit.getClientRobit().getCursorY() * (free.getLineHeight()))),
       free,
       1.5F, 1.5F,
       white
