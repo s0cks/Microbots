@@ -24,6 +24,8 @@ import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.network.IGuiHandler;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
+import shoes.common.injector.Injector;
+import shoes.common.injector.InjectorFactory;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -49,6 +51,7 @@ implements IRobitPartManager,
 
   public static final RobitRegistry<ClientRobit> CLIENT_REGISTRY = new ClientRobitRegistry();
   public static final RobitRegistry<ServerRobit> SERVER_REGISTRY = new ServerRobitRegistry();
+  public static final Injector injector = InjectorFactory.create(new MicrobotsModule());
 
   private final Map<String, IRobitPart> parts = new HashMap<>();
 

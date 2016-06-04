@@ -1,16 +1,26 @@
 package microbots.common.core.robit;
 
 import microbots.api.IRobit;
+import microbots.common.core.Keyboard;
 import microbots.common.core.Terminal;
 import net.minecraft.nbt.NBTTagCompound;
 
 public final class ClientRobit
 implements IRobit {
   private final String id;
-  private Terminal terminal = new Terminal(69, 13);
+  private final Keyboard keyboard = new Keyboard(256);
+  private final Terminal terminal = new Terminal(69, 13);
 
   public ClientRobit(String id){
     this.id = id;
+  }
+
+  public int getCursorX(){
+    return this.terminal.getCursorX();
+  }
+
+  public int getCursorY(){
+    return this.terminal.getCursorY();
   }
 
   @Override
@@ -33,8 +43,13 @@ implements IRobit {
 
   }
 
+  public String getKeyboard(){
+    return this.keyboard.toString();
+  }
+
   @Override
   public void readFromNBT(NBTTagCompound compound) {
     this.terminal.readFromNBT(compound);
+    this.keyboard.readFromNBT(compound);
   }
 }

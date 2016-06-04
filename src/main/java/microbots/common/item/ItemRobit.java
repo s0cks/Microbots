@@ -46,7 +46,7 @@ extends Item{
     if(!worldIn.isRemote){
       playerIn.addChatComponentMessage(new TextComponentString("Spawned Robit"));
       EntityRobit robit = new EntityRobit(worldIn);
-      robit.initialize(DefaultRobitModels.ALL[stack.getItemDamage()]);
+      robit.setModel(DefaultRobitModels.ALL[stack.getItemDamage()]);
       robit.setLocationAndAngles(pos.getX(), pos.getY(), pos.getZ(), 1.0F, 1.0F);
       worldIn.spawnEntityInWorld(robit);
     }

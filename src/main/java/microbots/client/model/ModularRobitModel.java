@@ -35,7 +35,6 @@ implements Iterable<IRobitPart>{
       NBTTagList parts = compound.getTagList("RobitParts", Constants.NBT.TAG_COMPOUND);
       for(int i = 0; i < parts.tagCount(); i++){
         NBTTagCompound partCompound = parts.getCompoundTagAt(i);
-        System.out.println("Loading Part: " + partCompound.getString("ID"));
         this.parts.add(MicrobotsApi.PART_MANAGER.getPart(partCompound.getString("ID")));
       }
     }

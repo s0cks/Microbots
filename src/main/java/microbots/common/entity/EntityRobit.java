@@ -1,5 +1,6 @@
 package microbots.common.entity;
 
+import microbots.api.IRobitAccess;
 import microbots.client.model.DefaultRobitModels;
 import microbots.client.model.ModularRobitModel;
 import microbots.common.Microbots;
@@ -69,13 +70,20 @@ extends EntityGolem {
     this.getDataManager().register(ROBIT, "");
   }
 
-  public void initialize(ModularRobitModel model){
+  public void setModel(ModularRobitModel model){
     this.getDataManager().set(MODEL, model);
-    String id = UUID.randomUUID().toString();
-    this.getDataManager().set(ROBIT, id);
-    ServerRobit robit = new ServerRobit(id, this);
-    Microbots.SERVER_REGISTRY.register(robit);
-    threads.execute(robit::initialize);
+  }
+
+  @Override
+  public void onUpdate() {
+    super.onUpdate();
+    if((this.getDataManager().get(ROBIT)).isEmpty()){
+      String id = UUID.randomUUID().toString();
+      this.getDataManager().set(ROBIT, id);
+      ServerRobit robit = new ServerRobit(id, this);
+      Microbots.SERVER_REGISTRY.register(robit);
+      threads.execute(robit::initialize);
+    }
   }
 
   @Override
@@ -96,13 +104,16 @@ extends EntityGolem {
 
   @Override
   public EnumActionResult applyPlayerInteraction(EntityPlayer player, Vec3d vec, ItemStack stack, EnumHand hand) {
-    player.openGui(Microbots.instance, Microbots.GUI_ROBIT, this.getEntityWorld(), ((int) this.posX), ((int) this.posY), ((int) this.posZ));
+    if(player.getHeldItem(hand) != null && player.getHeldItem(hand).getItem() instanceof IRobitAccess){
+      player.openGui(Microbots.instance, Microbots.GUI_ROBIT, this.getEntityWorld(), ((int) this.posX), ((int) this.posY), ((int) this.posZ));
+    }
     return EnumActionResult.PASS;
   }
 
   @Override
+  @SuppressWarnings("unchecked")
   public Iterable<ItemStack> getArmorInventoryList() {
-    return Collections.EMPTY_LIST;
+    return ((Iterable<ItemStack>) Collections.EMPTY_LIST);
   }
 
   @Override

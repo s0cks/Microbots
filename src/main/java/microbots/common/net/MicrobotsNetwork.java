@@ -10,5 +10,6 @@ public final class MicrobotsNetwork{
   public static void init(){
     INSTANCE.registerMessage(PacketRequestSync.class, PacketRequestSync.class, 0x0, Side.SERVER);
     INSTANCE.registerMessage(PacketSyncClient.class, PacketSyncClient.class, 0x1, Side.CLIENT);
+    INSTANCE.registerMessage(PacketKeydown.class, PacketKeydown.class, 0x2, Side.SERVER);
   }
 }

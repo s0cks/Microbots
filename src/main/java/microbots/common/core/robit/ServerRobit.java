@@ -3,10 +3,19 @@ package microbots.common.core.robit;
 import io.github.s0cks.mscheme.Environment;
 import io.github.s0cks.mscheme.Scheme;
 import io.github.s0cks.mscheme.SchemeParser;
+import io.github.s0cks.mscheme.primitives.SchemeNull;
 import io.github.s0cks.mscheme.primitives.SchemeObject;
+import io.github.s0cks.mscheme.primitives.SchemeSymbol;
 import microbots.api.IRobit;
 import microbots.common.Microbots;
+import microbots.common.core.Keyboard;
 import microbots.common.core.Terminal;
+import microbots.common.core.robit.rproc.set_color;
+import microbots.common.core.robit.tproc.cls;
+import microbots.common.core.robit.tproc.display;
+import microbots.common.core.robit.tproc.get_cursor_pos_x;
+import microbots.common.core.robit.tproc.get_cursor_pos_y;
+import microbots.common.core.robit.tproc.set_cursor_pos;
 import microbots.common.entity.EntityRobit;
 import microbots.common.net.MicrobotsNetwork;
 import microbots.common.net.PacketSyncClient;
@@ -18,14 +27,22 @@ import java.io.InputStream;
 public final class ServerRobit
 implements IRobit {
   private final EntityRobit robit;
+  private final Keyboard keyboard = new Keyboard(256);
   private final Terminal terminal = new Terminal(69, 13);
   private final Scheme scheme = new Scheme();
-  private final Environment env = new Environment();
+  private final Environment env = new Environment(SchemeNull.instance, SchemeNull.instance, Scheme.GLOBAL);
   private final String id;
 
   public ServerRobit(String id, EntityRobit robit){
     this.id = id;
     this.robit = robit;
+
+    this.env.define(new SchemeSymbol("display"), new display(this.terminal));
+    this.env.define(new SchemeSymbol("set-cursor-pos"), new set_cursor_pos(this.terminal));
+    this.env.define(new SchemeSymbol("cls"), new cls(this.terminal));
+    this.env.define(new SchemeSymbol("get-cursor-pos-y"), new get_cursor_pos_y(this.terminal));
+    this.env.define(new SchemeSymbol("get-cursor-pos-x"), new get_cursor_pos_x(this.terminal));
+    this.env.define(new SchemeSymbol("set-color"), new set_color(this.robit));
   }
 
   @Override
@@ -40,12 +57,24 @@ implements IRobit {
 
   @Override
   public void onKeydown(int code, char c) {
-
+    switch(code){
+      case org.lwjgl.input.Keyboard.KEY_BACK:
+        this.keyboard.take();
+        break;
+      case org.lwjgl.input.Keyboard.KEY_END:{
+        // TODO: implement signal logic
+        break;
+      }
+      default:{
+        this.keyboard.put(c);
+      }
+    }
   }
 
   @Override
   public void writeToNBT(NBTTagCompound compound) {
     this.terminal.writeToNBT(compound);
+    this.keyboard.writeToNBT(compound);
   }
 
   @Override
@@ -53,9 +82,8 @@ implements IRobit {
   }
 
   public void initialize(){
-    try(InputStream in = Microbots.proxy.client().getResourceManager().getResource(new ResourceLocation("microbots", "init/test.scm")).getInputStream()){
-      SchemeObject prog = (new SchemeParser(in)).parse();
-      SchemeObject returned = this.scheme.eval(prog, this.env);
+    try(InputStream in = Microbots.proxy.client().getResourceManager().getResource(new ResourceLocation("microbots", "init/core_os.scm")).getInputStream()){
+      SchemeObject returned = this.scheme.eval(((new SchemeParser(in)).parse()), this.env);
       String ret = returned != null ? returned.toString() : "";
       this.terminal.write(ret);
       this.terminal.setCursorPos(this.terminal.getCursorX() + ret.length(), this.terminal.getCursorY());

@@ -115,6 +115,7 @@ public final class Terminal{
   }
 
   public void write(String line){
+    if(line == null || line.isEmpty()) return;
     try{
       if((this.cursorX >= 0 && this.cursorY < this.height)){
         int writeX = this.cursorX;

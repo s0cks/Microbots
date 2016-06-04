@@ -1,95 +1,129 @@
 package microbots.client.gui;
 
-import dorkbox.tweenengine.Timeline;
-import dorkbox.tweenengine.Tween;
-import dorkbox.tweenengine.TweenAccessor;
-import dorkbox.tweenengine.TweenEquations;
-import microbots.client.render.entity.RenderEntityRobit;
 import microbots.common.Microbots;
 import microbots.common.entity.EntityRobit;
+import microbots.common.net.MicrobotsNetwork;
+import microbots.common.net.PacketKeydown;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.RenderHelper;
+import net.minecraft.client.renderer.VertexBuffer;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.util.ResourceLocation;
+import org.lwjgl.opengl.GL11;
+import shoes.client.ShoesTessellator;
+import shoes.common.Shoes;
+import truetyper.FontHelper;
+import truetyper.TrueTypeFont;
+
+import java.io.IOException;
 
 public final class GuiRobit
-extends GuiScreen
-implements TweenAccessor<GuiRobit> {
-  private static final byte ROTATION = 0x1;
+extends GuiScreen{
+  private static final ResourceLocation texture = new ResourceLocation("microbots", "textures/gui/display.png");
+  private static final int xSize = 512;
+  private static final int ySize = 512;
+  private static final float scaleFactor = 0.45F;
+  private static final float[] white = new float[]{ 1.0F, 1.0F, 1.0F, 1.0F };
 
   private final EntityRobit robit;
-
-  private float rotation;
   private int guiLeft;
   private int guiTop;
 
   public GuiRobit(EntityRobit robit) {
     this.robit = robit;
-    Timeline rotationTimeline = Timeline.createSequence()
-                                        .push(Tween.to(this, ROTATION, this, 5)
-                                                   .ease(TweenEquations.Linear)
-                                                   .target(360.0F))
-                                        .repeat(-1, 0.0F);
-    rotationTimeline.start(Microbots.proxy.tweenManager());
   }
 
   @Override
   public void initGui() {
     super.initGui();
-    this.guiLeft = ((this.width - (Microbots.proxy.client().displayWidth / 4)) / 2);
-    this.guiTop = ((this.height - (Microbots.proxy.client().displayHeight / 4)) / 2);
+    this.guiLeft = (int) (((this.width - (xSize * scaleFactor)) / (2 * scaleFactor)) - (xSize * 0.125F));
+    this.guiTop = (int) (((this.height - (ySize * scaleFactor)) / (2 * scaleFactor)) - 10);
+  }
+
+  @Override
+  protected void keyTyped(char typedChar, int keyCode)
+  throws IOException {
+    MicrobotsNetwork.INSTANCE.sendToServer(new PacketKeydown(this.robit.getServerRobit().id(), keyCode, typedChar));
   }
 
   @Override
   public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-    this.drawDefaultBackground();
-    this.renderRobit();
-
-    String ret = robit.getClientRobit().line(0);
-
-    this.fontRendererObj.drawString(ret, 100, 100, 0xFFFFFF);
+    this.drawTerminal();
+    this.drawText();
   }
 
-  private void renderRobit(){
+  private void drawText(){
     GlStateManager.pushMatrix();
-    GlStateManager.enableColorMaterial();
-    GlStateManager.pushMatrix();
-    GlStateManager.translate(0.0F, 200.0F, 0.0F);
-    {
-      int y = (((this.height / 2) - 120) / 2);
-      GlStateManager.translate(this.guiLeft + 10, this.guiTop + y, 50.0F);
+    TrueTypeFont free = Microbots.injector.get(TrueTypeFont.class);
+    int y = 0;
+    for (int i = 0; i < 13; i++) {
+      String ret = robit.getClientRobit()
+                        .line(i);
+      FontHelper.drawString(ret, (this.guiLeft + 23) * scaleFactor, ((this.guiTop + 18) * scaleFactor) + (y += (free.getHeight() / 1.75F)), free, 1.5F, 1.5F, white);
     }
-    GlStateManager.scale(-100.0F, 100.0F, 100.0F);
-    GlStateManager.rotate(180.0F, 0.0F, 0.0F, 1.0F);
-    RenderHelper.enableStandardItemLighting();
-    GlStateManager.rotate(this.rotation, 0.0f, 1.0F, 0.0F);
-    GlStateManager.translate(0.0F, 0.0F, 0.0F);
-    ((RenderEntityRobit) Microbots.proxy.client()
-                                        .getRenderManager()
-                                        .getEntityRenderObject(this.robit)).doRenderWithDivergence(this.robit, 0.0, 0.0, 0.0, 0.0F);
-    RenderHelper.disableStandardItemLighting();
+
+    FontHelper.drawString(
+      this.robit.getClientRobit().getKeyboard(),
+      (this.guiLeft + 23) * scaleFactor + (free.getWidth(this.robit.getClientRobit().line(this.robit.getClientRobit().getCursorY()).trim())),
+      ((this.guiTop + 18) * scaleFactor) + (this.robit.getClientRobit().getCursorY() + (free.getHeight() / 1.75F)),
+      free,
+      1.5F, 1.5F,
+      white
+    );
+
     GlStateManager.popMatrix();
+  }
+
+  private void drawTerminal() {
+    GlStateManager.pushMatrix();
+
+    GlStateManager.pushMatrix();
+    GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+    GlStateManager.scale(scaleFactor, scaleFactor, scaleFactor);
+    Microbots.proxy.client().renderEngine.bindTexture(texture);
+    ShoesTessellator tess = Shoes.injector.get(ShoesTessellator.class);
+    VertexBuffer vb = tess.getBuffer();
+    vb.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
+    vb.pos(this.guiLeft, this.guiTop, this.zLevel)
+      .tex(0, 0)
+      .endVertex();
+    vb.pos(this.guiLeft, this.guiTop + (ySize * 1.5F), this.zLevel)
+      .tex(0, 1)
+      .endVertex();
+    vb.pos(this.guiLeft + (xSize * 1.5F), this.guiTop + (ySize * 1.5F), this.zLevel)
+      .tex(1, 1)
+      .endVertex();
+    vb.pos(this.guiLeft + (xSize * 1.5F), this.guiTop, this.zLevel)
+      .tex(1, 0)
+      .endVertex();
+    tess.draw();
+    GlStateManager.popMatrix();
+
+    GlStateManager.pushMatrix();
+    GlStateManager.scale(scaleFactor, scaleFactor, scaleFactor);
+    GlStateManager.disableTexture2D();
+    vb.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
+    vb.pos(this.guiLeft + 23, this.guiTop + 23, 1.0F)
+      .color(17, 17, 17, 255)
+      .endVertex();
+    vb.pos(this.guiLeft + 23, this.guiTop + 23 + (ySize - 60), 1.0F)
+      .color(17, 17, 17, 255)
+      .endVertex();
+    vb.pos(this.guiLeft + 23 + (xSize * 1.175F), this.guiTop + 23 + (ySize - 60), 1.0F)
+      .color(17, 17, 17, 255)
+      .endVertex();
+    vb.pos(this.guiLeft + 23 + (xSize * 1.175F), this.guiTop + 23, 1.0F)
+      .color(17, 17, 17, 255)
+      .endVertex();
+    tess.draw();
+    GlStateManager.enableTexture2D();
+    GlStateManager.popMatrix();
+
     GlStateManager.popMatrix();
   }
 
   @Override
-  public int getValues(GuiRobit target, int tweenType, float[] returnValues) {
-    switch (tweenType) {
-      case ROTATION:
-        returnValues[1] = this.rotation;
-        return 1;
-      default:
-        return 0;
-    }
-  }
-
-  @Override
-  public void setValues(GuiRobit target, int tweenType, float[] newValues) {
-    switch (tweenType) {
-      case ROTATION:
-        this.rotation = newValues[0];
-        break;
-      default:
-        break;
-    }
+  public boolean doesGuiPauseGame() {
+    return false;
   }
 }
