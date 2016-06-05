@@ -51,8 +51,6 @@ extends GuiScreen {
       case Keyboard.KEY_ESCAPE:
         super.keyTyped(typedChar, keyCode);
         break;
-      case Keyboard.KEY_SPACE:
-        break;
       default: {
         MicrobotsNetwork.INSTANCE.sendToServer(new PacketKeydown(this.robit.getServerRobit()
                                                                            .id(), keyCode, typedChar));

@@ -5,11 +5,17 @@ import io.github.s0cks.mscheme.Scheme;
 import io.github.s0cks.mscheme.SchemeParser;
 import io.github.s0cks.mscheme.primitives.SchemeNull;
 import io.github.s0cks.mscheme.primitives.SchemeSymbol;
+import microbots.api.IFileSystem;
 import microbots.api.IRobit;
 import microbots.api.Signal;
-import microbots.common.Microbots;
 import microbots.common.core.Keyboard;
 import microbots.common.core.Terminal;
+import microbots.common.core.fs.Ext9001FileSystem;
+import microbots.common.core.robit.fproc.fclose;
+import microbots.common.core.robit.fproc.fopen;
+import microbots.common.core.robit.fproc.fread;
+import microbots.common.core.robit.fproc.fwrite;
+import microbots.common.core.robit.oproc.eval;
 import microbots.common.core.robit.oproc.poll;
 import microbots.common.core.robit.oproc.send;
 import microbots.common.core.robit.rproc.move;
@@ -24,7 +30,6 @@ import microbots.common.entity.EntityRobit;
 import microbots.common.net.MicrobotsNetwork;
 import microbots.common.net.PacketSyncClient;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ResourceLocation;
 
 import java.io.InputStream;
 import java.util.concurrent.BlockingQueue;
@@ -35,6 +40,7 @@ implements IRobit {
   private final EntityRobit robit;
   private final Keyboard keyboard = new Keyboard(256);
   private final Terminal terminal = new Terminal();
+  private final IFileSystem fileSystem = new Ext9001FileSystem();
   private final Scheme scheme = new Scheme();
   private final Environment env = new Environment(SchemeNull.instance, SchemeNull.instance, Scheme.GLOBAL);
   private final String id;
@@ -59,6 +65,13 @@ implements IRobit {
     // OS Procedures
     this.env.define(new SchemeSymbol("poll"), new poll(this));
     this.env.define(new SchemeSymbol("send"), new send(this));
+    this.env.define(new SchemeSymbol("eval"), new eval(this.fileSystem, this.scheme, new Environment(SchemeNull.instance, SchemeNull.instance, this.env)));
+
+    // FS Procedures
+    this.env.define(new SchemeSymbol("fopen"), new fopen(this.fileSystem));
+    this.env.define(new SchemeSymbol("fclose"), new fclose());
+    this.env.define(new SchemeSymbol("fwrite"), new fwrite());
+    this.env.define(new SchemeSymbol("fread"), new fread());
   }
 
   @Override
@@ -80,6 +93,10 @@ implements IRobit {
       case org.lwjgl.input.Keyboard.KEY_RETURN:{
         this.sendSignal(new Signal("send", this.keyboard.toString()));
         this.keyboard.reset();
+        break;
+      }
+      case org.lwjgl.input.Keyboard.KEY_SPACE:{
+        this.keyboard.put(' ' );
         break;
       }
       default:{
@@ -114,7 +131,7 @@ implements IRobit {
   }
 
   public void initialize(){
-    try(InputStream in = Microbots.proxy.client().getResourceManager().getResource(new ResourceLocation("microbots", "init/core_os.scm")).getInputStream()){
+    try(InputStream in = this.fileSystem.openRead("/bin/core_os.scm")){
       this.terminal.clear();
       this.terminal.setCursorPos(1, 1);
       this.terminal.write("Loading core_os.scm");

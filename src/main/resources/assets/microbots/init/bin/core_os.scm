@@ -24,6 +24,9 @@
                 (begin
                     (display input)
                     (newline)
+                    (define result (eval input))
+                    (display "<< ") (display result)
+                    (newline)
                     (main-loop)))))
     (cls)
     (set-cursor-pos 1 1)
