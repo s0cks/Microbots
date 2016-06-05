@@ -1,6 +1,7 @@
 package microbots.client.gui;
 
 import microbots.common.Microbots;
+import microbots.common.core.robit.ClientRobit;
 import microbots.common.entity.EntityRobit;
 import microbots.common.net.MicrobotsNetwork;
 import microbots.common.net.PacketKeydown;
@@ -19,19 +20,21 @@ import truetyper.TrueTypeFont;
 import java.io.IOException;
 
 public final class GuiRobit
-extends GuiScreen{
+extends GuiScreen {
   private static final ResourceLocation texture = new ResourceLocation("microbots", "textures/gui/display.png");
   private static final int xSize = 512;
   private static final int ySize = 512;
   private static final float scaleFactor = 0.45F;
-  private static final float[] white = new float[]{ 1.0F, 1.0F, 1.0F, 1.0F };
+  private static final float[] white = new float[]{1.0F, 1.0F, 1.0F, 1.0F};
 
   private final EntityRobit robit;
+  private final ClientRobit client;
   private int guiLeft;
   private int guiTop;
 
   public GuiRobit(EntityRobit robit) {
     this.robit = robit;
+    this.client = robit.getClientRobit();
   }
 
   @Override
@@ -44,11 +47,15 @@ extends GuiScreen{
   @Override
   protected void keyTyped(char typedChar, int keyCode)
   throws IOException {
-    switch(keyCode){
-      case Keyboard.KEY_ESCAPE: super.keyTyped(typedChar, keyCode); break;
-      case Keyboard.KEY_SPACE: break;
-      default:{
-        MicrobotsNetwork.INSTANCE.sendToServer(new PacketKeydown(this.robit.getServerRobit().id(), keyCode, typedChar));
+    switch (keyCode) {
+      case Keyboard.KEY_ESCAPE:
+        super.keyTyped(typedChar, keyCode);
+        break;
+      case Keyboard.KEY_SPACE:
+        break;
+      default: {
+        MicrobotsNetwork.INSTANCE.sendToServer(new PacketKeydown(this.robit.getServerRobit()
+                                                                           .id(), keyCode, typedChar));
       }
     }
   }
@@ -59,25 +66,25 @@ extends GuiScreen{
     this.drawText();
   }
 
-  private void drawText(){
+  private void drawText() {
     GlStateManager.pushMatrix();
-    TrueTypeFont free = Microbots.injector.get(TrueTypeFont.class);
+    TrueTypeFont droid = Microbots.injector.get(TrueTypeFont.class);
     int y = 0;
-    for (int i = 0; i < 13; i++) {
-      String ret = robit.getClientRobit()
-                        .line(i);
-      FontHelper.drawString(ret, (this.guiLeft + 23) * scaleFactor, ((this.guiTop + 18) * scaleFactor) + (y += (free.getHeight() / 1.75F)), free, 1.5F, 1.5F, white);
+    for (int i = 0; i < 60; i++) {
+      String line = this.client.line(i);
+      FontHelper.drawString(line, (this.guiLeft + 23) * scaleFactor, ((this.guiTop + 18) * scaleFactor) + y, droid, 1.5F, 1.5F, white);
+      if (i == this.client.getCursorY()) {
+        FontHelper.drawString(
+          this.client.getKeyboard(),
+          ((this.guiLeft + 23) * scaleFactor + droid.getWidth(line.trim() + " ")),
+          ((this.guiTop + 18) * scaleFactor + y),
+          droid,
+          1.5F, 1.5F,
+          white
+        );
+      }
+      y += (droid.getHeight() / 1.75F);
     }
-
-    FontHelper.drawString(
-      this.robit.getClientRobit().getKeyboard(),
-      (this.guiLeft + 23 + this.robit.getClientRobit().getCursorX()) * scaleFactor,
-      ((this.guiTop + 18) * scaleFactor + (this.robit.getClientRobit().getCursorY() * (free.getLineHeight()))),
-      free,
-      1.5F, 1.5F,
-      white
-    );
-
     GlStateManager.popMatrix();
   }
 

@@ -8,6 +8,7 @@ import io.github.s0cks.mscheme.primitives.SchemeProcedure;
 import io.github.s0cks.mscheme.primitives.SchemeString;
 import microbots.common.entity.EntityRobit;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3i;
 
 public final class move
@@ -24,7 +25,9 @@ extends SchemeProcedure{
     args = SchemeUtils.cdr(args);
     double value = ((SchemeNumber) SchemeUtils.car(args)).value();
     Vec3i moveVec = dir.getDirectionVec();
-    this.robit.moveEntity(moveVec.getX() * value, moveVec.getY() * value, moveVec.getZ() * value);
+    BlockPos pos = this.robit.getPosition().add(moveVec.getX() * value, moveVec.getY() * value, moveVec.getZ() * value);
+    this.robit.setFacing(dir);
+    this.robit.setTarget(pos);
     return null;
   }
 }

@@ -15,7 +15,7 @@ extends SchemeProcedure{
 
   @Override
   public SchemeObject apply(Scheme scheme, SchemeObject schemeObject) {
-    terminal.clear();
+    this.terminal.clear();
     return null;
   }
 }

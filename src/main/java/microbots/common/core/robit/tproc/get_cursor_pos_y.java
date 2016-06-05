@@ -16,6 +16,6 @@ extends SchemeProcedure{
 
   @Override
   public SchemeObject apply(Scheme scheme, SchemeObject schemeObject) {
-    return new SchemeNumber(terminal.getCursorY());
+    return new SchemeNumber(this.terminal.getCursorY());
   }
 }

@@ -36,9 +36,7 @@ extends CommonProxy{
 
   @Override
   public void preInit() {
-    RenderingRegistry.registerEntityRenderingHandler(EntityRobit.class, (manager) -> {
-      return new RenderEntityRobit(manager, null, 0.0F);
-    });
+    RenderingRegistry.registerEntityRenderingHandler(EntityRobit.class, RenderEntityRobit::new);
     MinecraftForge.EVENT_BUS.register(ClientEventHandler.instance());
 
     for(int i = 0; i < DefaultRobitModels.ALL_NAMES.length; i++){

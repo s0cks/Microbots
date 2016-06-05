@@ -5,7 +5,8 @@ import microbots.common.core.robit.ServerRobit;
 public final class ServerRobitRegistry
 extends RobitRegistry<ServerRobit>{
   @Override
-  public void update() {
-    this.all().forEach(ServerRobit::sync);
+  public void register(ServerRobit robit) {
+    super.register(robit);
+    robit.sync();
   }
 }

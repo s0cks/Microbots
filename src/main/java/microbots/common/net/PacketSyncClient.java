@@ -36,9 +36,7 @@ implements IMessage,
 
   @Override
   public IMessage onMessage(PacketSyncClient message, MessageContext ctx) {
-    if(!Microbots.CLIENT_REGISTRY.contains(message.id)){
-      Microbots.CLIENT_REGISTRY.register(new ClientRobit(message.id));
-    }
+    if(!Microbots.CLIENT_REGISTRY.contains(message.id)) Microbots.CLIENT_REGISTRY.register(new ClientRobit(message.id));
     Microbots.CLIENT_REGISTRY.get(message.id).readFromNBT(message.terminal);
     return null;
   }

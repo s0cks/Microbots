@@ -17,7 +17,7 @@ public final class Terminal{
   private String[] lines;
 
   public Terminal(){
-    this(60, 19);
+    this(60, 60);
   }
 
   public Terminal(int width, int height) {
@@ -34,34 +34,6 @@ public final class Terminal{
     this.buildEmpty();
   }
 
-  public void clearLine(){
-    this.lines[this.cursorY] = this.empty;
-  }
-
-  public int getHeight() {
-    return this.height;
-  }
-
-  public int getWidth() {
-    return this.width;
-  }
-
-  public int getBackgroundColor(){
-    return this.bgColor;
-  }
-
-  public int getForegroundColor(){
-    return this.fgColor;
-  }
-
-  public void setBackgroundColor(int bg){
-    this.bgColor = bg;
-  }
-
-  public void setForegroundColor(int fg){
-    this.fgColor = fg;
-  }
-
   private void buildEmpty(){
     char[] spaces = new char[width];
     Arrays.fill(spaces, ' ');
@@ -72,27 +44,19 @@ public final class Terminal{
   }
 
   public void setCursorPos(int x, int y){
-    if((this.cursorX != x) || (this.cursorY != y)){
-      this.cursorX = x;
-      this.cursorY = y;
+    this.cursorX = x;
+    this.cursorY = y;
 
-      if(this.cursorX < 0){
-        this.cursorX = 0;
-      } else if(this.cursorX > this.width){
-        this.cursorX = this.width;
-      }
-
-      if(this.cursorY < 0){
-        this.cursorY = 0;
-      } else if(this.cursorY > this.height){
-        this.cursorY = this.height;
-      }
+    if(this.cursorX < 0){
+      this.cursorX = 0;
+    } else if(this.cursorX > this.width){
+      this.cursorX = this.width;
     }
-  }
 
-  public void setCursorBlink(boolean blink){
-    if(this.cursorBlink != blink){
-      this.cursorBlink = blink;
+    if(this.cursorY < 0){
+      this.cursorY = 0;
+    } else if(this.cursorY > this.height){
+      this.cursorY = this.height;
     }
   }
 
@@ -102,16 +66,6 @@ public final class Terminal{
 
   public int getCursorY(){
     return this.cursorY;
-  }
-
-  public boolean getCursorBlink(){
-    return this.cursorBlink;
-  }
-
-  public void backspace(){
-    if(this.cursorX >= 1 && this.cursorY < this.height){
-      this.lines[this.cursorY] = this.lines[this.cursorY].substring(0, this.cursorX - 1) + " " + this.lines[this.cursorY].substring(this.cursorX + 1);
-    }
   }
 
   public void write(String line){
@@ -130,7 +84,7 @@ public final class Terminal{
           spaceLeft = this.width;
         }
 
-        line = line.replace("\t", " ");
+        line = line.replace("\t", "  ");
         if(spaceLeft > 0){
           String oldLine = this.lines[this.cursorY];
           StringBuilder newLine = new StringBuilder();
@@ -176,7 +130,6 @@ public final class Terminal{
     if((y >= 0) && (y < this.height)){
       return this.lines[y];
     }
-
     return "<error>";
   }
 

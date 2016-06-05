@@ -1,6 +1,7 @@
 package microbots.common.core.robit;
 
 import microbots.api.IRobit;
+import microbots.api.Signal;
 import microbots.common.core.Keyboard;
 import microbots.common.core.Terminal;
 import net.minecraft.nbt.NBTTagCompound;
@@ -9,7 +10,7 @@ public final class ClientRobit
 implements IRobit {
   private final String id;
   private final Keyboard keyboard = new Keyboard(256);
-  private final Terminal terminal = new Terminal(69, 13);
+  private final Terminal terminal = new Terminal();
 
   public ClientRobit(String id){
     this.id = id;
@@ -51,5 +52,15 @@ implements IRobit {
   public void readFromNBT(NBTTagCompound compound) {
     this.terminal.readFromNBT(compound);
     this.keyboard.readFromNBT(compound);
+  }
+
+  @Override
+  public void sendSignal(Signal signal) {
+
+  }
+
+  @Override
+  public Signal pollSignal() {
+    return null;
   }
 }

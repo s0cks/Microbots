@@ -2,6 +2,7 @@ package microbots.common.core.robit.tproc;
 
 import io.github.s0cks.mscheme.Scheme;
 import io.github.s0cks.mscheme.SchemeUtils;
+import io.github.s0cks.mscheme.primitives.SchemeNull;
 import io.github.s0cks.mscheme.primitives.SchemeObject;
 import io.github.s0cks.mscheme.primitives.SchemeProcedure;
 import io.github.s0cks.mscheme.primitives.SchemeString;
@@ -17,14 +18,16 @@ extends SchemeProcedure{
 
   @Override
   public SchemeObject apply(Scheme scheme, SchemeObject schemeObject) {
-    SchemeString value = ((SchemeString) SchemeUtils.car(schemeObject));
-    if(value.value.equals("\n")){
-      terminal.setCursorPos(1, terminal.getCursorY() + 1);
-      System.out.println("newline");
-    } else{
-      terminal.write(value.value);
-      terminal.setCursorPos(terminal.getCursorX() + value.value.length(), terminal.getCursorY());
+    SchemeObject obj = SchemeUtils.car(schemeObject);
+    if(obj instanceof SchemeString){
+      SchemeString value = ((SchemeString) obj);
+      this.terminal.write(value.value);
+      this.terminal.setCursorPos(this.terminal.getCursorX() + value.value.length(), this.terminal.getCursorY());
+    } else if(!(obj instanceof SchemeNull)){
+      this.terminal.write(obj.toString());
+      this.terminal.setCursorPos(this.terminal.getCursorX() + obj.toString().length(), this.terminal.getCursorY());
     }
+
     return null;
   }
 }

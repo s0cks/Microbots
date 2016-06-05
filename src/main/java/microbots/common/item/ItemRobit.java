@@ -47,7 +47,8 @@ extends Item{
       playerIn.addChatComponentMessage(new TextComponentString("Spawned Robit"));
       EntityRobit robit = new EntityRobit(worldIn);
       robit.setModel(DefaultRobitModels.ALL[stack.getItemDamage()]);
-      robit.setLocationAndAngles(pos.getX(), pos.getY(), pos.getZ(), 1.0F, 1.0F);
+      robit.setLocationAndAngles(pos.getX(), pos.getY() + 1.0F, pos.getZ(), 1.0F, 1.0F);
+      System.out.println(pos);
       worldIn.spawnEntityInWorld(robit);
     }
     return EnumActionResult.PASS;

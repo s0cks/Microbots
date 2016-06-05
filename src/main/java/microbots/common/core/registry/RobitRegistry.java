@@ -12,8 +12,6 @@ public abstract class RobitRegistry<T extends IRobit> {
   private final Map<String, T> robits = new ConcurrentHashMap<>();
   private final Lock lock = new ReentrantLock();
 
-  public abstract void update();
-
   public Collection<T> all() {
     try {
       this.lock.lock();

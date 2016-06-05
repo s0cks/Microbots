@@ -2,6 +2,8 @@ package microbots.common.core;
 
 import net.minecraft.nbt.NBTTagCompound;
 
+import java.util.Arrays;
+
 public final class Keyboard{
   private final char[] buffer;
   private int capacity;
@@ -16,6 +18,7 @@ public final class Keyboard{
   public void reset(){
     this.write = 0;
     this.available = 0;
+    Arrays.fill(this.buffer, ((char) -1));
   }
 
   public int capacity(){
