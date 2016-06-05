@@ -16,6 +16,7 @@ import microbots.common.core.robit.fproc.fopen;
 import microbots.common.core.robit.fproc.fread;
 import microbots.common.core.robit.fproc.fwrite;
 import microbots.common.core.robit.oproc.eval;
+import microbots.common.core.robit.oproc.pause;
 import microbots.common.core.robit.oproc.poll;
 import microbots.common.core.robit.oproc.send;
 import microbots.common.core.robit.rproc.move;
@@ -66,6 +67,7 @@ implements IRobit {
     this.env.define(new SchemeSymbol("poll"), new poll(this));
     this.env.define(new SchemeSymbol("send"), new send(this));
     this.env.define(new SchemeSymbol("eval"), new eval(this.fileSystem, this.scheme, new Environment(SchemeNull.instance, SchemeNull.instance, this.env)));
+    this.env.define(new SchemeSymbol("pause"), new pause());
 
     // FS Procedures
     this.env.define(new SchemeSymbol("fopen"), new fopen(this.fileSystem));
