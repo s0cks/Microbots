@@ -23,7 +23,7 @@ extends SchemeProcedure{
       SchemeString value = ((SchemeString) obj);
       this.terminal.write(value.value);
       this.terminal.setCursorPos(this.terminal.getCursorX() + value.value.length(), this.terminal.getCursorY());
-    } else if(!(obj instanceof SchemeNull)){
+    } else if(!(obj instanceof SchemeNull) && obj != null){
       this.terminal.write(obj.toString());
       this.terminal.setCursorPos(this.terminal.getCursorX() + obj.toString().length(), this.terminal.getCursorY());
     }

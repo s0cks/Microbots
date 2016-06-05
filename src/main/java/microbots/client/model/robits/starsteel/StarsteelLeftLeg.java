@@ -1,9 +1,8 @@
 package microbots.client.model.robits.starsteel;
 
-import microbots.api.IRobitPart;
 import microbots.client.model.DefaultRobitModels;
+import microbots.client.model.robits.base.RobitLeftLeg;
 import microbots.common.Microbots;
-import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 
@@ -12,8 +11,7 @@ import net.minecraft.entity.Entity;
  * Created using Tabula 4.1.1
  */
 public class StarsteelLeftLeg
-extends ModelBase
-implements IRobitPart{
+extends RobitLeftLeg{
   public ModelRenderer leftLeg;
   public ModelRenderer leftFoot;
   public ModelRenderer leftToes;
@@ -21,6 +19,7 @@ implements IRobitPart{
   public ModelRenderer leftKnee;
 
   public StarsteelLeftLeg() {
+    super("starsteel_lleg");
     this.textureWidth = 64;
     this.textureHeight = 32;
     this.leftFoot = new ModelRenderer(this, 8, 0);
@@ -38,16 +37,6 @@ implements IRobitPart{
     this.leftHeel = new ModelRenderer(this, 22, 0);
     this.leftHeel.setRotationPoint(-1.5F, 20.0F, 0.6F);
     this.leftHeel.addBox(-0.5F, 0.0F, 0.0F, 1, 4, 1, 0.0F);
-  }
-
-  @Override
-  public String id() {
-    return "starsteel_lleg";
-  }
-
-  @Override
-  public Type type() {
-    return Type.LEFT_LEG;
   }
 
   @Override

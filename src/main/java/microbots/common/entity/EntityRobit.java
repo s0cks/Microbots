@@ -21,6 +21,7 @@ import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
@@ -32,7 +33,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 public final class EntityRobit
-extends Entity {
+extends Entity{
   private static final ExecutorService threads = Executors.newFixedThreadPool(128);
   private static final ModelSerializer MODELS = new ModelSerializer();
   private static final float VELOCITY = 0.4F;
@@ -46,6 +47,10 @@ extends Entity {
   public static final DataParameter<String> ROBIT = EntityDataManager.createKey(EntityRobit.class, DataSerializers.STRING);
   public static final DataParameter<BlockPos> TARGET = EntityDataManager.createKey(EntityRobit.class, DataSerializers.BLOCK_POS);
   public static final DataParameter<EnumFacing> FACING = EntityDataManager.createKey(EntityRobit.class, DataSerializers.FACING);
+
+  public float prevLimbSwingAmount = 0.0F;
+  public float limbSwingAmount = 0.0F;
+  public float limbSwing = 0.0F;
 
   private Future<?> task = null;
 
@@ -142,6 +147,21 @@ extends Entity {
       }
 
       this.moveEntity(this.motionX, 0, this.motionZ);
+
+      if(distance > 0 && (distance > 0.005F || velocity.dotProduct(velocity) > 0.005F)){
+        this.prevLimbSwingAmount = this.limbSwingAmount;
+        double deltaX = this.posX - this.prevPosX;
+        double deltaZ = this.posZ - this.prevPosZ;
+        float delta = MathHelper.sqrt_double(deltaX * deltaX + deltaZ * deltaZ) * 4.0F;
+        if(delta > 1.0F){
+          delta = 1.0F;
+        }
+        this.limbSwingAmount += (delta - this.limbSwingAmount) * 0.4F;
+        this.limbSwing += this.limbSwingAmount;
+      } else{
+        this.limbSwing = 0.0F;
+        this.limbSwingAmount = 0.0F;
+      }
 
       this.motionX *= DRAG;
       this.motionZ *= DRAG;

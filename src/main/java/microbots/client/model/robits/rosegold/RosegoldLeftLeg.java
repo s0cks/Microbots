@@ -1,9 +1,8 @@
 package microbots.client.model.robits.rosegold;
 
-import microbots.api.IRobitPart;
 import microbots.client.model.DefaultRobitModels;
+import microbots.client.model.robits.base.RobitLeftLeg;
 import microbots.common.Microbots;
-import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 
@@ -12,13 +11,13 @@ import net.minecraft.entity.Entity;
  * Created using Tabula 4.1.1
  */
 public class RosegoldLeftLeg
-extends ModelBase
-implements IRobitPart{
+extends RobitLeftLeg{
   public ModelRenderer leftLeg;
   public ModelRenderer leftLDecoration1;
   public ModelRenderer leftLDecoration2;
 
   public RosegoldLeftLeg() {
+    super("rosegold_lleg");
     this.textureWidth = 64;
     this.textureHeight = 32;
     this.leftLeg = new ModelRenderer(this, 0, 0);
@@ -30,16 +29,6 @@ implements IRobitPart{
     this.leftLDecoration2 = new ModelRenderer(this, 12, 0);
     this.leftLDecoration2.setRotationPoint(-1.5F, 21.0F, 0.0F);
     this.leftLDecoration2.addBox(-1.0F, 0.0F, -1.0F, 2, 3, 2, 0.1F);
-  }
-
-  @Override
-  public String id() {
-    return "rosegold_lleg";
-  }
-
-  @Override
-  public Type type() {
-    return Type.LEFT_LEG;
   }
 
   @Override

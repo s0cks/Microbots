@@ -31,7 +31,7 @@ minecraft {
 dependencies {
     testCompile 'junit:junit:4.12'
     compile 'com.dorkbox:TweenEngine:7.11'
-    compile files('libs/shoes-1.1.1.1.jar')
+    compile files('libs/shoes-1.1.2.1.jar')
     compile files('libs/MicroScheme-1.1.6.0.jar')
 }
 

@@ -5,6 +5,7 @@
 !/.gitmodules
 !/.gitignore
 !/build.gradle
+!/build.properties
 !/gradle
 !/gradlew
 !/gradlew.bat

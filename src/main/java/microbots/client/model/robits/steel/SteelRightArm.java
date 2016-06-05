@@ -1,9 +1,8 @@
 package microbots.client.model.robits.steel;
 
-import microbots.api.IRobitPart;
 import microbots.client.model.DefaultRobitModels;
+import microbots.client.model.robits.base.RobitRightArm;
 import microbots.common.Microbots;
-import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 
@@ -12,8 +11,7 @@ import net.minecraft.entity.Entity;
  * Created using Tabula 4.1.1
  */
 public class SteelRightArm
-extends ModelBase
-implements IRobitPart {
+extends RobitRightArm {
   public ModelRenderer rightAShoulder;
   public ModelRenderer rightArm;
   public ModelRenderer rightHand;
@@ -21,6 +19,7 @@ implements IRobitPart {
   public ModelRenderer rightArm3;
 
   public SteelRightArm() {
+    super("steel_rarm");
     this.textureWidth = 64;
     this.textureHeight = 32;
     this.rightArm2 = new ModelRenderer(this, 12, 16);
@@ -44,16 +43,6 @@ implements IRobitPart {
     this.rightAShoulder.setRotationPoint(2.5F, 12.0F, 0.0F);
     this.rightAShoulder.addBox(0.0F, -1.5F, -1.5F, 3, 3, 3, 0.0F);
     this.setRotateAngle(rightAShoulder, 0.7853981633974483F, 0.0F, 0.0F);
-  }
-
-  @Override
-  public String id() {
-    return "steeel_rarm";
-  }
-
-  @Override
-  public Type type() {
-    return Type.RIGHT_ARM;
   }
 
   @Override

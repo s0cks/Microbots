@@ -1,9 +1,8 @@
 package microbots.client.model.robits.steel;
 
-import microbots.api.IRobitPart;
 import microbots.client.model.DefaultRobitModels;
+import microbots.client.model.robits.base.RobitRightLeg;
 import microbots.common.Microbots;
-import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 
@@ -12,14 +11,14 @@ import net.minecraft.entity.Entity;
  * Created using Tabula 4.1.1
  */
 public class SteelRightLeg
-extends ModelBase
-implements IRobitPart {
+extends RobitRightLeg{
   public ModelRenderer rightLeg;
   public ModelRenderer rightFoot;
   public ModelRenderer rightHeel;
   public ModelRenderer rightLGuard;
 
   public SteelRightLeg() {
+    super("steel_rleg");
     this.textureWidth = 64;
     this.textureHeight = 32;
     this.rightHeel = new ModelRenderer(this, 18, 0);
@@ -35,16 +34,6 @@ implements IRobitPart {
     this.rightFoot = new ModelRenderer(this, 8, 0);
     this.rightFoot.setRotationPoint(1.5F, 21.0F, 0.0F);
     this.rightFoot.addBox(-1.0F, 0.0F, -2.0F, 2, 3, 3, 0.0F);
-  }
-
-  @Override
-  public String id() {
-    return "steel_rleg";
-  }
-
-  @Override
-  public Type type() {
-    return Type.RIGHT_LEG;
   }
 
   @Override

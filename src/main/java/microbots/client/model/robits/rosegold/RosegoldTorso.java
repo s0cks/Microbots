@@ -1,9 +1,8 @@
 package microbots.client.model.robits.rosegold;
 
-import microbots.api.IRobitPart;
 import microbots.client.model.DefaultRobitModels;
+import microbots.client.model.robits.base.RobitTorso;
 import microbots.common.Microbots;
-import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 
@@ -12,8 +11,7 @@ import net.minecraft.entity.Entity;
  * Created using Tabula 4.1.1
  */
 public class RosegoldTorso
-extends ModelBase
-implements IRobitPart{
+extends RobitTorso{
   public ModelRenderer torsoPelvis;
   public ModelRenderer torsoLower;
   public ModelRenderer torsoUpper;
@@ -22,6 +20,7 @@ implements IRobitPart{
   public ModelRenderer torsoHead;
 
   public RosegoldTorso() {
+    super("rosegold_torso");
     this.textureWidth = 64;
     this.textureHeight = 32;
     this.torsoLower = new ModelRenderer(this, 6, 8);
@@ -45,16 +44,6 @@ implements IRobitPart{
     this.torsoUpper = new ModelRenderer(this, 16, 8);
     this.torsoUpper.setRotationPoint(0.0F, 11.0F, 0.0F);
     this.torsoUpper.addBox(-2.0F, 0.0F, -1.5F, 4, 3, 3, 0.0F);
-  }
-
-  @Override
-  public String id() {
-    return "rosegold_torso";
-  }
-
-  @Override
-  public Type type() {
-    return Type.TORSO;
   }
 
   @Override

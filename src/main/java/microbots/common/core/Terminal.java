@@ -17,7 +17,7 @@ public final class Terminal{
   private String[] lines;
 
   public Terminal(){
-    this(60, 60);
+    this(58, 21);
   }
 
   public Terminal(int width, int height) {

@@ -1,9 +1,8 @@
 package microbots.client.model.robits.starsteel;
 
-import microbots.api.IRobitPart;
 import microbots.client.model.DefaultRobitModels;
+import microbots.client.model.robits.base.RobitLeftArm;
 import microbots.common.Microbots;
-import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 
@@ -12,8 +11,7 @@ import net.minecraft.entity.Entity;
  * Created using Tabula 4.1.1
  */
 public class StarsteelLeftArm
-extends ModelBase
-implements IRobitPart {
+extends RobitLeftArm{
   public ModelRenderer leftAShoulder;
   public ModelRenderer leftArm;
   public ModelRenderer leftADecoration1;
@@ -21,6 +19,7 @@ implements IRobitPart {
   public ModelRenderer leftASpike;
 
   public StarsteelLeftArm() {
+    super("starsteel_larm");
     this.textureWidth = 64;
     this.textureHeight = 32;
     this.leftADecoration1 = new ModelRenderer(this, 18, 15);
@@ -40,16 +39,6 @@ implements IRobitPart {
     this.leftASpike.setRotationPoint(-4.5F, 15.4F, 0.0F);
     this.leftASpike.addBox(-1.0F, 0.0F, -1.0F, 1, 3, 2, -0.1F);
     this.setRotateAngle(leftASpike, 0.0F, 0.0F, -0.2090904443889207F);
-  }
-
-  @Override
-  public String id() {
-    return "starsteel_larm";
-  }
-
-  @Override
-  public Type type() {
-    return Type.LEFT_ARM;
   }
 
   @Override

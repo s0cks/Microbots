@@ -1,15 +1,13 @@
 package microbots.client.model.robits.tungsten;
 
-import microbots.api.IRobitPart;
 import microbots.client.model.DefaultRobitModels;
+import microbots.client.model.robits.base.RobitTorso;
 import microbots.common.Microbots;
-import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 
 public final class TungstenTorso
-extends ModelBase
-implements IRobitPart {
+extends RobitTorso{
   private final ModelRenderer torso1;
   private final ModelRenderer torsoLower;
   private final ModelRenderer torsoUpper;
@@ -20,6 +18,7 @@ implements IRobitPart {
   private final ModelRenderer headJaw;
 
   public TungstenTorso(){
+    super("tungsten_torso");
     this.textureWidth = 64;
     this.textureHeight = 32;
     this.torsoSpine = new ModelRenderer(this, 34, 9);
@@ -53,16 +52,6 @@ implements IRobitPart {
     this.torsoLower.setRotationPoint(0.0F, 14.0F, -0.2F);
     this.torsoLower.addBox(-2.0F, 0.0F, -1.0F, 4, 3, 2, 0.0F);
     this.setRotateAngle(torsoLower, 0.054105206811824215F, 0.0F, 0.0F);
-  }
-
-  @Override
-  public String id() {
-    return "tungsten_torso";
-  }
-
-  @Override
-  public Type type() {
-    return Type.TORSO;
   }
 
   @Override

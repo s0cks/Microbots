@@ -1,21 +1,20 @@
 package microbots.client.model.robits.tungsten;
 
-import microbots.api.IRobitPart;
 import microbots.client.model.DefaultRobitModels;
+import microbots.client.model.robits.base.RobitRightArm;
 import microbots.common.Microbots;
-import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 
 public final class TungstenRightArm
-extends ModelBase
-implements IRobitPart {
+extends RobitRightArm{
   private final ModelRenderer rightAShoulder;
   private final ModelRenderer rightArm;
   private final ModelRenderer rightADecoration1;
   private final ModelRenderer rightADecoration2;
 
   public TungstenRightArm() {
+    super("tungsten_rarm");
     this.textureWidth = 64;
     this.textureHeight = 32;
     this.rightAShoulder = new ModelRenderer(this, 0, 18);
@@ -52,15 +51,5 @@ implements IRobitPart {
     modelRenderer.rotateAngleX = x;
     modelRenderer.rotateAngleY = y;
     modelRenderer.rotateAngleZ = z;
-  }
-
-  @Override
-  public String id() {
-    return "tungsten_rarm";
-  }
-
-  @Override
-  public Type type() {
-    return Type.RIGHT_ARM;
   }
 }

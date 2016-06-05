@@ -30,8 +30,7 @@ extends SchemeProcedure{
     SchemeObject script = SchemeUtils.car(SchemeUtils.car(schemeObject));
     if(script instanceof SchemeString){
       SchemeString name = ((SchemeString) script);
-      try(InputStream in = this.fs.openRead(this.fs.exists("/usr/bin/" + name.value + ".scm") ? "/usr/bin/" + name.value + ".scm" : "/bin" + name.value + ".scm")){
-        System.out.println("Evaluating: " + name);
+      try(InputStream in = this.fs.openRead(this.fs.exists("/usr/bin/" + name.value + ".scm") ? "/usr/bin/" + name.value + ".scm" : "/bin/" + name.value + ".scm")){
         return this.scheme.eval((new SchemeParser(in)).parse(), this.env);
       } catch(Exception e){
         e.printStackTrace(System.err);

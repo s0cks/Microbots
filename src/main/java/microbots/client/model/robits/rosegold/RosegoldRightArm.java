@@ -1,9 +1,8 @@
 package microbots.client.model.robits.rosegold;
 
-import microbots.api.IRobitPart;
 import microbots.client.model.DefaultRobitModels;
+import microbots.client.model.robits.base.RobitRightArm;
 import microbots.common.Microbots;
-import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 
@@ -12,14 +11,14 @@ import net.minecraft.entity.Entity;
  * Created using Tabula 4.1.1
  */
 public class RosegoldRightArm
-extends ModelBase
-implements IRobitPart{
+extends RobitRightArm{
   public ModelRenderer rightAShoulder;
   public ModelRenderer rightArm;
   public ModelRenderer rightADecoration1;
   public ModelRenderer rightADecoration2;
 
   public RosegoldRightArm() {
+    super("rosegold_rarm");
     this.textureWidth = 64;
     this.textureHeight = 32;
     this.rightADecoration1 = new ModelRenderer(this, 14, 14);
@@ -38,16 +37,6 @@ implements IRobitPart{
     this.rightAShoulder.mirror = true;
     this.rightAShoulder.setRotationPoint(2.0F, 12.0F, 0.0F);
     this.rightAShoulder.addBox(0.0F, -1.0F, -1.0F, 2, 2, 2, 0.1F);
-  }
-
-  @Override
-  public String id() {
-    return "rosegold_rarm";
-  }
-
-  @Override
-  public Type type() {
-    return Type.RIGHT_ARM;
   }
 
   @Override

@@ -68,20 +68,20 @@ extends GuiScreen {
     GlStateManager.pushMatrix();
     TrueTypeFont droid = Microbots.injector.get(TrueTypeFont.class);
     int y = 0;
-    for (int i = 0; i < 60; i++) {
+    for (int i = 0; i < 21; i++) {
       String line = this.client.line(i);
-      FontHelper.drawString(line, (this.guiLeft + 23) * scaleFactor, ((this.guiTop + 18) * scaleFactor) + y, droid, 1.5F, 1.5F, white);
+      FontHelper.drawString(line, (this.guiLeft + 23) * scaleFactor, ((this.guiTop + 28) * scaleFactor) + y, droid, 1.5F, 1.5F, white);
       if (i == this.client.getCursorY()) {
         FontHelper.drawString(
           this.client.getKeyboard(),
           ((this.guiLeft + 23) * scaleFactor + droid.getWidth(line.trim() + " ")),
-          ((this.guiTop + 18) * scaleFactor + y),
+          ((this.guiTop + 25) * scaleFactor + y),
           droid,
           1.5F, 1.5F,
           white
         );
       }
-      y += (droid.getHeight() / 1.75F);
+      y += (droid.getHeight() / 1.25F);
     }
     GlStateManager.popMatrix();
   }

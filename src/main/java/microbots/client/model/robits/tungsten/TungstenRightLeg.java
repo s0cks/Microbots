@@ -1,21 +1,20 @@
 package microbots.client.model.robits.tungsten;
 
-import microbots.api.IRobitPart;
 import microbots.client.model.DefaultRobitModels;
+import microbots.client.model.robits.base.RobitRightLeg;
 import microbots.common.Microbots;
-import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 
 public final class TungstenRightLeg
-extends ModelBase
-implements IRobitPart {
+extends RobitRightLeg{
   private final ModelRenderer rightLeg;
   private final ModelRenderer rightLFoot;
   private final ModelRenderer rightLDecoration1;
   private final ModelRenderer rightLDecoration2;
 
   public TungstenRightLeg(){
+    super("tungsten_rleg");
     this.textureWidth = 64;
     this.textureHeight = 32;
     this.rightLDecoration2 = new ModelRenderer(this, 20, 0);
@@ -50,15 +49,5 @@ implements IRobitPart {
     this.rightLFoot.render(f5);
     this.rightLDecoration1.render(f5);
     this.rightLeg.render(f5);
-  }
-
-  @Override
-  public String id() {
-    return "tungsten_rleg";
-  }
-
-  @Override
-  public Type type() {
-    return Type.RIGHT_LEG;
   }
 }
