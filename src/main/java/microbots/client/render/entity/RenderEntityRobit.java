@@ -24,7 +24,6 @@ extends Render<EntityRobit> {
     GlStateManager.disableLighting();
     GlStateManager.shadeModel(GL11.GL_SMOOTH);
     this.bindAccents(entity.getDataManager().get(EntityRobit.COLOR));
-
     GlStateManager.pushMatrix();
     GlStateManager.translate(x, y + 1.5F, z);
     GlStateManager.rotate(180.0F, 0.0F, 0.0F, 1.0F);
@@ -58,7 +57,9 @@ extends Render<EntityRobit> {
         }
         case RIGHT_LEG:{
           GlStateManager.translate(0.0F, divergence, 0.0F);
+          GlStateManager.rotate(20.0F, 1.0F, 0.0F, 0.0F);
           part.render(entity, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 1.0F / 16.0F);
+          GlStateManager.rotate(-20.0F, 1.0F, 0.0F, 0.0F);
           GlStateManager.translate(0.0F, -divergence, 0.0F);
           break;
         }

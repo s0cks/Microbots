@@ -44,14 +44,14 @@ extends TileEntity{
   }
 
   @Override
-  public void writeToNBT(NBTTagCompound compound) {
-    super.writeToNBT(compound);
+  public NBTTagCompound writeToNBT(NBTTagCompound compound) {
     if(this.model != null){
       NBTTagCompound modelCompound = new NBTTagCompound();
       this.model.writeToNBT(modelCompound);
       compound.setTag("RobitModel", modelCompound);
     }
     compound.setString("DivState", this.state.toString());
+    return super.writeToNBT(compound);
   }
 
   public State state(){
